@@ -556,7 +556,7 @@ void multiply( sBigNum *pResult , const sBigNum num01 , const sBigNum num02 )
 }
 void divide( sBigNum *pQuotient , sBigNum *pRemainder , const sBigNum num01 , const sBigNum num02 )
 {
-    sBigNum A,B,C;
+    sBigNum A,B;
     for(int i=0;i<num01.log;i++)
     {
         A.a[i]=num01.a[i];
@@ -564,17 +564,10 @@ void divide( sBigNum *pQuotient , sBigNum *pRemainder , const sBigNum num01 , co
     A.log=num01.log;
     int times=0;
     A.sign=1;
-    for(int i=0;i<num02.log;i++)
-    {
-        C.a[i]=num02.a[i];
-    }
-    C.log=num02.log;
-    C.sign=-1;
-    
+    B.a[0]=0;
     for(;B.a[0]>=0;times++)
     {
-        add( &B , A ,C);
-        //print(B);
+        subtract( &B , A ,num02);
         for(int i=0;i<B.log;i++)
         {  
             A.a[i]=B.a[i]; 
@@ -610,6 +603,7 @@ void divide( sBigNum *pQuotient , sBigNum *pRemainder , const sBigNum num01 , co
     
     
 }
+
 int32_t power( sBigNum *pResult , int32_t n, int32_t k )
 {
     sBigNum A,B;
@@ -633,6 +627,7 @@ int32_t power( sBigNum *pResult , int32_t n, int32_t k )
         A.a[i]=pResult->a[i];
         B.a[i]=pResult->a[i];
     }
+    A.log=count;
     B.log=A.log;
     if(k>1)
     {
@@ -647,7 +642,8 @@ int32_t power( sBigNum *pResult , int32_t n, int32_t k )
     }
     else if(k==1)
     {
-        for(int i=0;i<count;i++)
+
+        for(int i=0;i<A.log;i++)
         {
             A.a[i]=pResult->a[i];
             pResult->log=A.log;
@@ -662,5 +658,28 @@ int32_t power( sBigNum *pResult , int32_t n, int32_t k )
 }
 int32_t combine( sBigNum *pResult , int32_t n, int32_t k )
 {
-    
+
+    if(k==0)
+    {
+        return 1;
+        pResult->log=0;
+    }
+    else if(k==0)
+    {
+        return n;
+        pResult->log=1;
+        pResult->a[0]=n;
+    }
+    else if(n==1&&k==1)
+    {
+        return 1;
+        pResult->log=1;
+        pResult->a[0]=1;
+    }
+    else
+    {
+        if(n-k<k)
+            k=n-k;
+        return combine(pResult,n-1,k-1)+combine(pResult,n-1,k);
+    }
 }

@@ -9,7 +9,7 @@
 
 typedef struct _sBigNum 
 {
-    int a[1000];
+    int8_t a[1000];
     int log;
     int overflow;
     int sign;

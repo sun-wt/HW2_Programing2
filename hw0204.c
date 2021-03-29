@@ -18,7 +18,7 @@ int32_t combine( sBigNum *pResult , int32_t n, int32_t k );
 int main()
 {
     sBigNum a,b;
-    set(&a,"51");
+    set(&a,"50");
     set(&b,"5");
     print(a);
     print(b);
@@ -41,16 +41,17 @@ int main()
     }*/
     sBigNum ans, q, r;
     add( &ans, a, b );
-    print(ans);
-    subtract( &ans, a, b );
-    print(ans);
-    multiply( &ans, a, b );
-    print(ans);
-    power( &ans, 2, 6 );
     //print(ans);
+    subtract( &ans, a, b );
+    //print(ans);
+    multiply( &ans, a, b );
+    //print(ans);
+    power( &ans, 2, 3 );
+    print(ans);
     divide( &q , &r , a , b);
-    print(q);
-    print(r);
+    //print(q);
+    //print(r);
+    combine(&ans,20,10);
     return 0;
 }
 
