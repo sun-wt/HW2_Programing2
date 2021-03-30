@@ -656,30 +656,173 @@ int32_t power( sBigNum *pResult , int32_t n, int32_t k )
     }  
     pResult->sign=1; 
 }
-int32_t combine( sBigNum *pResult , int32_t n, int32_t k )
+/*int32_t combine( sBigNum *pResult , int32_t n, int32_t k )
 {
+    sBigNum A,B;
+    set(&A,"0");
+    A.sign=1;
+    A.log=1;
+    A.a[0]=1;
+    if(n==1&&k==0)
+    {
+        set(pResult,"1");
+        //printf("1,0:");
+        //print(*pResult);
+    }
+    
+    else if(k==0||n==k)
+    {
+        set(pResult,"1");
 
-    if(k==0)
-    {
-        return 1;
-        pResult->log=0;
+        //print(*pResult);
     }
-    else if(k==0)
-    {
-        return n;
-        pResult->log=1;
-        pResult->a[0]=n;
-    }
-    else if(n==1&&k==1)
-    {
-        return 1;
-        pResult->log=1;
-        pResult->a[0]=1;
-    }
+
     else
     {
         if(n-k<k)
             k=n-k;
-        return combine(pResult,n-1,k-1)+combine(pResult,n-1,k);
+        
+        combine(pResult,n-1,k);
+        
+        
+        add(pResult,*pResult,A);
+        
+        for(int i=0;i<pResult->log;i++)
+        {
+            pResult->a[i]=A.a[i];
+        }
+        print(*pResult);
+        pResult->log=A.log;
+        pResult->sign=A.sign;
+        combine(pResult,n-1,k-1);
+        add(pResult,*pResult,A);
+
+    }
+
+}*/
+int32_t combine( sBigNum *pResult , int32_t n, int32_t k )
+{
+    sBigNum num,A;
+    int e[(int)log(n)];
+    set(&A,"0");
+    A.sign=1;
+    set(&num,"1");
+    set(pResult,"0");
+    if(n==k)
+    {
+        num.sign=1;
+        pResult->sign=1;
+        add(pResult,*pResult,num);
+    }
+    else if(k==0)
+    {
+        num.sign=1;
+        pResult->sign=1;
+        add(pResult,*pResult,num);   
+    }
+    else if(k==1)
+    {
+        /*int count=0;
+        int N=n;
+        while(N>0)
+        {
+            e[count]=N%10;
+            N/=10;
+            count++;
+        }
+        int times=0;
+        for(int i=count-1;i>=0;i++)
+        {
+            num.a[times]=e[i];
+            times++;
+        }
+        num.log=count;
+        num.sign=1;*/
+        num.a[0]=n;
+        num.log=1;
+        num.sign=1;
+        pResult->sign=1;
+        add(pResult,*pResult,num);
+    }
+    else
+    {
+        num.sign=1;
+        pResult->sign=1;
+        combine(pResult,n-1,k-1);
+        for(int i=0;i<pResult->log;i++)
+        {
+            A.a[i]=pResult->a[i];
+        }
+        
+        A.log=pResult->log;
+        A.sign=pResult->sign;
+        combine(pResult,n-1,k);
+        add(pResult,*pResult,A);
     }
 }
+/*
+int32_t combine2( sBigNum *pResult , int32_t n, int32_t k )
+{
+    sBigNum num,A;
+    int e[(int)log(n)];
+    set(&A,"0");
+    A.sign=1;
+    set(&num,"1");
+    set(pResult,"0");
+    if(pResult->log==NULL)
+    {
+        set(pResult,"0");
+        pResult->sign=1;
+    }
+    if(n==k)
+    {
+        num.sign=1;
+        pResult->sign=1;
+        add(pResult,*pResult,num);
+    }
+    else if(k==0)
+    {
+        num.sign=1;
+        pResult->sign=1;
+        add(pResult,*pResult,num);   
+    }
+    else if(k==1)
+    {
+        /*int count=0;
+        int N=n;
+        while(N>0)
+        {
+            e[count]=N%10;
+            N/=10;
+            count++;
+        }
+        int times=0;
+        for(int i=count-1;i>=0;i++)
+        {
+            num.a[times]=e[i];
+            times++;
+        }
+        num.log=count;
+        num.sign=1;
+        num.a[0]=n;
+        num.log=1;
+        num.sign=1;
+        pResult->sign=1;
+        add(pResult,*pResult,num);
+    }
+    else
+    {
+        num.sign=1;
+        pResult->sign=1;
+        combine2(pResult,n-1,k-1);
+        for(int i=0;i<pResult->log;i++)
+        {
+            A.a[i]=pResult->a[i];
+        }
+        
+        A.log=pResult->log;
+        A.sign=pResult->sign;
+        combine2(pResult,n-1,k);
+        add(pResult,*pResult,A);
+    }
+}*/
