@@ -24,6 +24,6 @@ void multiply( sBigNum *pResult , const sBigNum num01 , const sBigNum num02 );
 void divide( sBigNum *pQuotient , sBigNum *pRemainder , const sBigNum num01 , const sBigNum num02 );
 int32_t power( sBigNum *pResult , int32_t n, int32_t k );
 int32_t combine( sBigNum *pResult , int32_t n, int32_t k );
-
+int32_t combine2( sBigNum *pResult , int32_t n, int32_t k );
 
 #endif
